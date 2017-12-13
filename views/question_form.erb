@@ -1,0 +1,21 @@
+<h1 class="jumbotron">Survey: <%= @survey.name() %></h1>
+
+<% if @questions.any?() %>
+  <h3>List of Questions:</h3>
+  <h5>(Click on a question from the list below to update it)</h5>
+  <ul>
+    <% @questions.each() do |question| %>
+      <li><a href="/questions/<%= question.id() %>/edit"><%= question.description() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no Questions assign to this Survey!</p>
+<% end %>
+<br>
+
+<h3> Add Question to your Survey:</h3>
+  <form action="/add_question/<%= @survey.id%>" method="post">
+    <label for="description">Type your Question here:</label>
+    <input id="description" name="description" type="text">
+    <button type="submit">Add Question </button>
+</form>

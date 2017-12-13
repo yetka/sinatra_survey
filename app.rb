@@ -43,3 +43,18 @@ delete("/survey_edit/:id") do
   @surveys = Survey.all()
   erb(:index)
 end
+
+get ('/question_form/:id') do
+  @survey = Survey.find(params.fetch("id").to_i())
+  erb(:question_form)
+end
+
+post('/add_question/:id') do
+  description = params.fetch("description")
+  @survey = Survey.find(params.fetch("id").to_i())
+  survey_id = @survey.id
+  question = Question.new({:description => description, :survey_id => survey_id})
+  question.save()
+  @questions = Question.all()
+  erb(:question_form)
+end
