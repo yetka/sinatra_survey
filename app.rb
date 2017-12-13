@@ -46,6 +46,7 @@ end
 
 get ('/question_form/:id') do
   @survey = Survey.find(params.fetch("id").to_i())
+  @questions = Question.all()
   erb(:question_form)
 end
 
@@ -56,5 +57,27 @@ post('/add_question/:id') do
   question = Question.new({:description => description, :survey_id => survey_id})
   question.save()
   @questions = Question.all()
+  erb(:question_form)
+end
+
+get ('/questions/:id/edit') do
+  @question = Question.find(params.fetch("id").to_i())
+  erb(:question_edit)
+end
+
+patch("/question_edit/:id") do
+  description = params.fetch("description")
+  @question = Question.find(params.fetch("id").to_i())
+  @question.update({:description => description})
+  @questions = Question.all()
+  @survey = Survey.find(@question.survey_id)
+  erb(:question_form)
+end
+
+delete("/question_edit/:id") do
+  @question = Question.find(params.fetch("id").to_i())
+  @question.delete()
+  @questions = Question.all()
+  @survey = Survey.find(@question.survey_id)
   erb(:question_form)
 end
